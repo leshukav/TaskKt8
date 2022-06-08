@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Generic</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">main.kt</span></div><h1>main.kt</h1><pre class="source lang-java linenums">import java.lang.RuntimeException
+
+
+fun main() {
+<span class="nc" id="L5">    val serviceNote = NoteService()</span>
+<span class="nc" id="L6">    serviceNote.add(Note(text = &quot;Note1&quot;))</span>
+<span class="nc" id="L7">    serviceNote.add(Note(text = &quot;Note2&quot;))</span>
+<span class="nc" id="L8">    serviceNote.add(Note(text = &quot;Note3&quot;))</span>
+<span class="nc" id="L9">    serviceNote.add(Note(text = &quot;Note4&quot;))</span>
+<span class="nc" id="L10">    serviceNote.createComment(Note(1), comment = &quot;Comment1&quot;)</span>
+<span class="nc" id="L11">    serviceNote.createComment(Note(3), comment = &quot;Comment3&quot;)</span>
+<span class="nc" id="L12">    serviceNote.createComment(Note(3), comment = &quot;Comment3-2&quot;)</span>
+<span class="nc" id="L13">    serviceNote.createComment(Note(3), comment = &quot;Comment3-3&quot;)</span>
+<span class="nc" id="L14">    serviceNote.createComment(Note(4), comment = &quot;Hi&quot;)</span>
+<span class="nc" id="L15">    serviceNote.deleteComment(Note(3), commentId = 2)</span>
+<span class="nc" id="L16">    serviceNote.delete(Note(2))</span>
+<span class="nc" id="L17">    println(serviceNote.getById(8))</span>
+<span class="nc" id="L18">    println(serviceNote.getNote())</span>
+<span class="nc" id="L19">    serviceNote.editComment(Note(1), commentId = 1, message = &quot;Yoops&quot;)</span>
+<span class="nc" id="L20">    serviceNote.getComment(3)</span>
+<span class="nc" id="L21">    println(serviceNote.getComment(3))</span>
+<span class="nc" id="L22">    serviceNote.restoreComment(Note(3), commentId = 2)</span>
+<span class="nc" id="L23">    println(serviceNote.getComment(3))</span>
+<span class="nc" id="L24">    println(serviceNote.getNote())</span>
+
+<span class="nc" id="L26">}</span>
+
+interface CrudServise&lt;A&gt; {
+    fun add(elem: A): A                                            // РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕР№ Р·Р°РјРµС‚РєРё
+    fun delete(elem: A): Boolean                                    // РЈРґР°Р»РµРЅРёРµ Р·Р°РёРµС‚РєРё С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+    fun edit(elem: A, text: String): A                              // Р РµРґР°РєС‚РёСЂСѓРµС‚ Р·Р°РјРµС‚РєСѓ С‚РµРєСѓС‰РµРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+    fun getNote(): List&lt;A&gt;                                          // Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє Р·Р°РјРµС‚РѕРє РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+    fun createComment(elem: A, message: String): Boolean               // Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІС‹Р№ РєРѕРјРјРµРЅС‚Р°СЂРёР№ Рє Р·Р°РјРµС‚РєРµ
+    fun deleteComment(elem: A, commentId: Int): Boolean                             // РЈРґР°Р»СЏРµС‚ РєРѕРјРјРµРЅС‚Р°СЂРёР№ Рє Р·Р°РјРµС‚РєРµ
+    fun editComment(elem: A, commentId: Int, message: String): Boolean              // Р РµРґР°РєС‚РёСЂСѓРµС‚ СѓРєР°Р·Р°РЅРЅС‹Р№ РєРѕРјРјРµРЅС‚Р°СЂРёР№ Сѓ Р·Р°РјРµС‚РєРё
+    fun getById(id: Int): Note?                                        // Р’РѕР·РІСЂР°С‰Р°РµС‚ Р·Р°РјРµС‚РєСѓ РїРѕ РµС‘ id
+    fun getComment(noteId: Int): List&lt;String&gt;                      // Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РєРѕРјРјРµРЅС‚Р°СЂРёРµРІ
+    fun restoreComment(elem: A, commentId: Int): Boolean                            // Р’РѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ СѓРґР°Р»РµРЅРЅС‹Р№ РєРѕРјРјРµРЅС‚Р°СЂРёР№
+}
+
+<span class="fc" id="L41">data class Note(</span>
+<span class="fc" id="L42">    var id: Int = 0,                                                       // id Р·Р°РјРµС‚РєРё</span>
+<span class="pc" id="L43">    var text: String = &quot;&quot;,                                                // РўРµРєСЃС‚ Р·Р°РјРµС‚РєРё</span>
+<span class="pc" id="L44">    var comments: MutableList&lt;Comments&gt; = mutableListOf&lt;Comments&gt;()      // РљРѕРјРјРµРЅС‚Р°СЂРёР№ Рє Р·Р°РјРµС‚РєРµ</span>
+) {
+<span class="fc" id="L46">}</span>
+
+<span class="pc" id="L48">data class Comments(</span>
+<span class="pc" id="L49">    var id: Int = 0,                 // id РєРѕРјРјРµРЅС‚Р°СЂРёСЏ</span>
+<span class="pc" id="L50">    var text: String = &quot;&quot;,          // С‚РµРєСЃС‚ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ</span>
+<span class="pc" id="L51">    var flag: Boolean = false       // False - РєРѕРјРјРµРЅС‚Р°СЂРёР№ СѓРґР°Р»РµРЅ РёР»Рё РµРіРѕ РЅРµС‚, True - РєРѕРјРјРµРЅС‚Р°СЂРёР№ РµСЃС‚СЊ РёР»Рё РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅ</span>
+<span class="nc" id="L52"> )</span>
+
+<span class="fc" id="L54">class PostNotFoundException(message: String) : RuntimeException(message)</span>
+
+<span class="fc" id="L56">class NoteService() : CrudServise&lt;Note&gt; {</span>
+<span class="fc" id="L57">    private var notes = mutableListOf&lt;Note&gt;()</span>
+<span class="fc" id="L58">    private var countNote: Int = 1</span>
+
+
+    override fun toString(): String {
+<span class="nc" id="L62">        return notes.toString()</span>
+    }
+
+    override fun add(elem: Note): Note {
+<span class="fc" id="L66">        elem.id = countNote</span>
+<span class="fc" id="L67">        countNote++</span>
+<span class="fc" id="L68">        notes += elem</span>
+<span class="fc" id="L69">        return notes.last()</span>
+    }
+
+    override fun delete(elem: Note): Boolean {
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        for ((index, deleteNote) in notes.withIndex()) {</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">            if (deleteNote.id == elem.id) {</span>
+<span class="fc" id="L75">                notes.remove(deleteNote)</span>
+<span class="fc" id="L76">                return true</span>
+            }
+        }
+<span class="fc" id="L79">        return false</span>
+    }
+
+    override fun edit(elem: Note, text: String): Note {
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        for ((index, editNote) in notes.withIndex()) {</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">            if (editNote.id == elem.id) {</span>
+<span class="fc" id="L85">                notes[index].text = text</span>
+<span class="fc" id="L86">                return notes[index]</span>
+            }
+        }
+<span class="nc" id="L89">        throw PostNotFoundException(&quot;Р—Р°РјРµС‚РєРё СЃ id = ${elem.id} РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚&quot;)</span>
+
+    }
+
+    override fun getNote(): List&lt;Note&gt; {
+<span class="nc" id="L94">        return notes</span>
+    }
+
+    override fun createComment(elem: Note, comment: String): Boolean {
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for ((index, note) in notes.withIndex()) {</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (note.id == elem.id) {</span>
+<span class="fc" id="L100">                notes[index].comments.add(Comments(note.comments.count() + 1, text = comment, flag = true))</span>
+<span class="fc" id="L101">                return true</span>
+            }
+        }
+<span class="fc" id="L104">        return false</span>
+    }
+
+    override fun deleteComment(elem: Note, commentId: Int): Boolean {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        for ((index, note) in notes.withIndex()) {</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">            if (note.id == elem.id) {</span>
+<span class="pc bpc" id="L110" title="1 of 4 branches missed.">                for (i in 0..(notes[index].comments.size - 1) ) {</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">                    if (notes[index].comments[i].id == commentId) {</span>
+<span class="fc" id="L112">                        notes[index].comments[i].flag = false</span>
+<span class="fc" id="L113">                        return true</span>
+                    }
+                }
+                }
+            }
+<span class="fc" id="L118">        throw PostNotFoundException(&quot;РљРѕРјРјРµРЅС‚Р°СЂРёСЏ СЃ С‚Р°РєРёРј commentId = ${commentId} РЅРµ СЃСѓС†РµСЃС‚РІСѓРµС‚&quot;)</span>
+    }
+
+    override fun getById(id: Int): Note? {
+<span class="nc bnc" id="L122" title="All 6 branches missed.">        return notes.find { it.id == id }</span>
+    }
+
+    override fun getComment(noteId: Int): List&lt;String&gt; {
+<span class="nc" id="L126">        var message: List&lt;String&gt; = mutableListOf()</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            for ((index, note) in notes.withIndex()) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">                if (note.id == noteId) {</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">                    for ((ind, comment) in note.comments.withIndex()) {</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">                        if (comment.flag == true)</span>
+<span class="nc" id="L131">                            message += comment.text</span>
+                    }
+<span class="nc" id="L133">                    return message</span>
+                }
+        }
+<span class="nc" id="L136">       throw PostNotFoundException(&quot;РљРѕРјРјРµРЅС‚Р°СЂРёРµРІ Рє Р·Р°РјРµС‚РєРµ $noteId  РЅРµС‚&quot;)</span>
+    }
+
+
+    override fun editComment(elem: Note, commentId: Int, message: String): Boolean {
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for ((index, note) in notes.withIndex()) {</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            if (note.id == elem.id) {</span>
+<span class="pc bpc" id="L143" title="2 of 4 branches missed.">                for (i in 0..(notes[index].comments.size - 1) ) {</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">                    if (notes[index].comments[i].id == commentId) {</span>
+<span class="fc" id="L145">                        notes[index].comments[i].text = message</span>
+<span class="fc" id="L146">                        return true</span>
+                    }
+                }
+            }
+        }
+<span class="fc" id="L151">        throw PostNotFoundException(&quot;РљРѕРјРјРµРЅС‚Р°СЂРёСЏ СЃ С‚Р°РєРёРј commentId = ${commentId} РЅРµ СЃСѓС†РµСЃС‚РІСѓРµС‚, СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РЅРµ РІРѕР·РјРѕР¶РЅРѕ&quot;)</span>
+    }
+
+    override fun restoreComment(elem: Note, commentId: Int): Boolean {
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        for ((index, note) in notes.withIndex()) {</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">            if (note.id == elem.id) {</span>
+<span class="pc bpc" id="L157" title="1 of 4 branches missed.">                for (i in 0..(notes[index].comments.size - 1) ) {</span>
+<span class="pc bpc" id="L158" title="1 of 4 branches missed.">                    if (notes[index].comments[i].id == commentId &amp;&amp; notes[index].comments[i].flag != true) {</span>
+<span class="fc" id="L159">                        notes[index].comments[i].flag = true</span>
+<span class="fc" id="L160">                        return true</span>
+                    }
+                }
+            }
+        }
+<span class="fc" id="L165">        throw PostNotFoundException(&quot;РљРѕРјРјРµРЅС‚Р°СЂРёСЏ СЃ С‚Р°РєРёРј commentId = ${commentId} РЅРµ СЃСѓС†РµСЃС‚РІСѓРµС‚, РІРѕСЃСЃС‚Р°РЅР°РІР»РёРІР°С‚СЊ РЅРµ С‡РµРіРѕ&quot;)</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
